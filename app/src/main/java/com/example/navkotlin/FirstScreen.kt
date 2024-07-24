@@ -8,6 +8,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -17,9 +18,12 @@ import androidx.compose.ui.unit.dp
 import com.example.navkotlin.ui.theme.NavKotlinTheme
 
 @Composable
-fun FirstScreen(navigateToSecondScreen:()->Unit) {
-    var name= remember {
+fun FirstScreen(navigateToSecondScreen:(String, Int)->Unit) {
+    val name= remember {
         mutableStateOf("")
+    }
+    val age= remember {
+        mutableIntStateOf(0)
     }
     Column (
         modifier = Modifier
@@ -33,8 +37,12 @@ fun FirstScreen(navigateToSecondScreen:()->Unit) {
         OutlinedTextField(value = name.value, onValueChange ={
             name.value=it
         } )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(value = age.intValue.toString(), onValueChange ={
+            age.intValue=it.toInt()
+        } )
         Button(onClick = {
-            navigateToSecondScreen()
+            navigateToSecondScreen(name.value, age.value)
         }) {
             Text(text = "Go to second screen")
         }
@@ -45,6 +53,5 @@ fun FirstScreen(navigateToSecondScreen:()->Unit) {
 @Composable
 fun FirstScreenPreview() {
     NavKotlinTheme {
-        FirstScreen({})
     }
 }
